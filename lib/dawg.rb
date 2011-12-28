@@ -1,0 +1,2 @@
+class Dawg
+end

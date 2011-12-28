@@ -1,11 +1,8 @@
-require 'dawger/version'
 require 'dawg/base'
-require 'dawg/node'
-require 'dawger/core'
 
 module Dawger
-	class << self
-		def from_array(words = [])
+	class Core
+		def self.from_array(words = [])
 			dawg = Dawg::Base.new
 			for word in words do
 				dawg.add word

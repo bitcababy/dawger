@@ -15,7 +15,7 @@ gemspec
 
 # Your gem is dependent on dev or edge Rails. Once you can lock this
 # dependency down to a specific version, move it to your gemspec.
-gem 'rails',     :git => 'git://github.com/rails/rails.git'
+# gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
