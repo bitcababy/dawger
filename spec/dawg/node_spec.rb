@@ -32,6 +32,10 @@ describe Dawg::Node do
 		end
 	end
 	
+	def add_kid(node, ch)
+		node.letters[ch] = Dawg::Node.new
+	end
+	
 	describe'#empty?' do
 		it "returns true if letters are empty" do
 			node = Dawg::Node.new
@@ -39,25 +43,26 @@ describe Dawg::Node do
 		end
 		it "returns false if letters aren't empty" do
 			node = Dawg::Node.new
-			node.letters["p"] = {}
+			add_kid(node, 'p')
 			node.empty?.should be_false
 		end
 		
 	end
 	
-	# describe '#children' do
-	# 	it "returns an empty array if it doesn't have any kids" do
-	# 		root = Dawg::Node.new
-	# 		root.children.should eq([])
-	# 	end
-	# 	it "returns an array of all of its children" do
-	# 		root = Dawg::Node.new
-	# 		kid = root.letters['c'] = Dawg::Node.new
-	# 		root.children.should be_empty
-	# 		kid.letters['a'] = Dawg::Node.new
-	# 		root.children.count.should eq(1)
-	# 	end
-	# end
+	describe '#children' do
+		it "returns an empty array if it doesn't have any kids" do
+			root = Dawg::Node.new
+			root.children.should eq([])
+		end
+		it "returns an array of all of its children" do
+			root = Dawg::Node.new
+			
+			kid = add_kid(root, 'c')
+			root.children.should be_empty
+			kid.letters['a'] = Dawg::Node.new
+			root.children.count.should eq(1)
+		end
+	end
 
 	
 end # Dawg::Node
