@@ -1,6 +1,27 @@
 require 'spec_helper'
 
+module DawgNodeHelper
+	def add_kid(node, ch)
+		node.letters[ch] = Dawg::Node.new
+	end
+	
+	def from_str(str="")
+		node = root = Dawg::Node.new
+		str.each_char do |ch|
+			node = node.letters[ch] = Dawg::Node.new
+		end
+		return root
+	end
+	
+	def check_node_in_arr(node, arr)
+		arr[node.max_depth].index(node)
+	end
+	
+end
+
 describe Dawg::Node do
+	include DawgNodeHelper
+
 	describe ':==' do
 		it "returns true if its components all match" do
 			node1 = Dawg::Node.new
@@ -32,10 +53,6 @@ describe Dawg::Node do
 		end
 	end
 	
-	def add_kid(node, ch)
-		node.letters[ch] = Dawg::Node.new
-	end
-	
 	describe'#empty?' do
 		it "returns true if letters are empty" do
 			node = Dawg::Node.new
@@ -48,19 +65,42 @@ describe Dawg::Node do
 		end
 		
 	end
-	
-	describe '#children' do
-		it "returns an empty array if it doesn't have any kids" do
-			root = Dawg::Node.new
-			root.children.should eq([])
+
+	describe '#add_depths' do
+		it "sets the @max_depth property" do
+			root = from_str('city')
+			root.add_depths
+			root.max_depth.should eq(3)
+			root.letters['c'].max_depth.should eq(2)
 		end
-		it "returns an array of all of its children" do
-			root = Dawg::Node.new
+	end
+
+	describe '#add_to_depth_array' do
+		before :each do
+			@node_array = {}
+			0.upto(10) {|i| @node_array[i] = []}
+		end
+
+		it "adds itself to array[0] if it's a leaf" do
+			root = from_str("a")
+			root.add_depths
+			root.add_to_depth_array(@node_array)
+			@node_array[0].index(root).should_not be_nil
+		end
+		
+		it "adds itself and its children if it's not a leaf" do
+			word = 'cat'
+			root = from_str(word)
+			root.add_depths
+			root.add_to_depth_array(@node_array)
 			
-			kid = add_kid(root, 'c')
-			root.children.should be_empty
-			kid.letters['a'] = Dawg::Node.new
-			root.children.count.should eq(1)
+			check_node_in_arr(root, @node_array).should_not be_nil
+			node = root['c']
+			check_node_in_arr(node, @node_array).should_not be_nil
+			node = node['a']
+			check_node_in_arr(node, @node_array).should_not be_nil
+			node = node['t']
+			node.empty?.should be_true
 		end
 	end
 
@@ -68,32 +108,6 @@ describe Dawg::Node do
 end # Dawg::Node
 	
 	
-	# def add_depths
-	# 	if @letters.empty?
-	# 		@max_depth = 0
-	# 	else
-	# 		@max_depth = 1 + (@letters.values.collect {|kid| kid.empty? ? -1 : kid.add_depths}).max
-	# 	end
-	# end
-	# 
-	# def add_to_depth_array(arr)
-	# 	if @max_depth > 0 then
-	# 		@letters.each do |k,v| 
-	# 			if v then
-	# 				i = arr[@max_depth-1].index v
-	# 				if i then
-	# 					@letters[k] = arr[@max_depth - 1][i]
-	# 				else
-	# 					v.add_to_depth_array(arr)
-	# 				end
-	# 			else
-	# 				arr[0] << { k => v}
-	# 			end
-	# 		end
-	# 	end
-	# 	arr[@max_depth] << self unless arr[@max_depth].include? self
-	# 	return @max_depth
-	# end
 	# 
 	# def merge_nodes(candidates)
 	# 	@letters.each do |k, v|
