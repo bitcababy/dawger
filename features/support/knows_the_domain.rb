@@ -1,6 +1,6 @@
 module KnowsTheDomain
 	def my_dawg
-		@my_dawg ||= Dawg.new
+		@my_dawg ||= Dawg::Node.new
 	end
 
 	def my_file
