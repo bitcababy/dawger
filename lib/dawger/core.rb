@@ -1,17 +1,15 @@
-require 'dawg'
+require 'dawg/node'
 
 module Dawger
-	class Core
-		def self.from_array(words = [])
-			dawg = Dawg.new
-			dawg.add_array(words)
-			return dawg
+	module Core
+		def self.create_from_array(words = [])
+			Dawg::Node.create_from_array(words)
 		end
 	
-		def self.from_file(file)
-			dawg = Dawg.new
-			dawg.from_file(file)
-			return dawg
+		def self.create_from_file(file)
+			Dawg::Node.create_from_file(file)
 		end
+		
 	end
+	
 end
