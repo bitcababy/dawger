@@ -15,14 +15,10 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
 
-  s.add_dependency "rails", "~> 3.1.3"
+  # s.add_dependency "rails", "~> 3.1.3"
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "cucumber"
-  # s.add_development_dependency "capybara"
-  # s.add_development_dependency "sinatra"
-  # s.add_development_dependency "simplecov"
-  # s.add_development_dependency "aruba"
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
